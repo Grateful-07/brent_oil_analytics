@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+seaborn
+scipy
+pymc>=5.0.0
+arviz
+statsmodels
+scikit-learn
+pytest
