@@ -60,25 +60,25 @@ cd frontend
 npm install
 npm run dev
 Open http://localhost:5173 in your browser to view the live dashboard.
-## 🧠 Quantitative Methodology & Model Assumptions
+ 🧠 Quantitative Methodology & Model Assumptions
 
-### Bayesian Change Point Detection (Task 2)
+ Bayesian Change Point Detection (Task 2)
 Our structural break analysis assumes that Brent Crude oil price returns follow distinct statistical regimes partitioned by major geopolitical/economic shocks.
-* **Model Likelihood:** We assume daily log returns $r_t$ are normally distributed:
+Model Likelihood: We assume daily log returns $r_t$ are normally distributed:
   $$r_t \sim \text{Normal}(\mu_s, \sigma_s)$$
   where the active regime $s$ (before or after a break) determines the mean and variance parameters.
-* **Priors:** We define weak conjugate priors on the regime transition times (change points) over the time-series index:
+Priors: We define weak conjugate priors on the regime transition times (change points) over the time-series index:
   $$\tau \sim \text{DiscreteUniform}(0, T)$$
-* **MCMC Sampling:** Using PyMC's No-U-Turn Sampler (NUTS), we draw 2,000 posterior samples with a 1,000-sample burn-in to verify convergence. Convergence diagnostics are verified using Gelman-Rubin ($\hat{R} < 1.05$) statistics.
+MCMC Sampling:Using PyMC's No-U-Turn Sampler (NUTS), we draw 2,000 posterior samples with a 1,000-sample burn-in to verify convergence. Convergence diagnostics are verified using Gelman-Rubin ($\hat{R} < 1.05$) statistics.
 🖥️ Dashboard Interface & Interactive Controls
 
 Our analytical dashboard is built for active decision-making, allowing users to cross-reference quantitative model outputs with real-world qualitative events.
 
-### Main Analytics Interface
-*A high-performance dark-mode interface tracking active pipeline days and statistical anomalies.*
+Main Analytics Interface
+A high-performance dark-mode interface tracking active pipeline days and statistical anomalies.*
 ![Main Dashboard Panel](screenshots/dashboard_main.png)
 
-### Geopolitical Event Correlation & Interactive Filtering
-*Clicking any tracked event projects a temporal reference line directly across the price timeline, dynamically calculating and visualizing localized impact.*
+Geopolitical Event Correlation & Interactive Filtering
+Clicking any tracked event projects a temporal reference line directly across the price timeline, dynamically calculating and visualizing localized impact.*
 ![Interactive Geopolitical Highlight](screenshots/dashboard_interactive.png)
 
