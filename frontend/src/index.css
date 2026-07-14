@@ -1,0 +1,6 @@
+@import "tailwindcss"; /* Modern Tailwind v4 syntax */
+
+body {
+  margin: 0;
+  background-color: #020617; /* Matches our dashboard's dark theme */
+}
