@@ -1,52 +1,64 @@
-# Birhan Energies: Brent Crude Oil Price Sensitivity Analysis
-### Quantitative Analysis of Geopolitical & Macroeconomic Market Shocks
+# Birhan Energies: Brent Crude Oil Quantitative Analytics & Structural Break Dashboard
 
-An enterprise-grade statistical pipeline designed to analyze and quantify how major political events, regional conflicts, international sanctions, and OPEC policy changes impact global Brent Crude Oil spot prices using Bayesian Change Point Analysis (`PyMC`).
+An end-to-end quantitative analytics platform designed to model, analyze, and visualize the structural impacts of major geopolitical and economic events on Brent Crude oil prices from 2019 to the present.
+
+This repository features a robust data engineering pipeline, advanced Bayesian structural break inference utilizing PyMC, and a high-performance interactive dashboard built with React and Flask.
+
+---
+
+## 🚀 Key Features
+
+* **Data Engineering & Statistical Baseline:** Cleansed daily spot prices, evaluated time-series stationarity using Augmented Dickey-Fuller (ADF) tests, and engineered features (such as daily log returns).
+* **Bayesian Change Point Detection:** Utilizes **PyMC** and Markov Chain Monte Carlo (MCMC) NUTS sampling to isolate structural eras and calculate statistical change points before/after major global shocks.
+* **Modern Full-Stack Dashboard:**
+  * **Frontend:** Built with React, Vite, **Tailwind CSS v4** (lightning-fast Rust-based styling engine), and **Recharts** for highly interactive, fluid timelines.
+  * **Backend:** A lightweight Flask API serving clean, structured endpoints with handled CORS policies.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Backend / Quantitative Modeling:** Python 3.12+, Flask, PyMC, Pandas, NumPy, Statsmodels
+* **Frontend UI:** React 18, Vite, Tailwind CSS v4, Recharts, Lucide Icons
+* **Workflow & Version Control:** Git, GitHub
 
 ---
 
 ## 📂 Repository Structure
 
 ```text
-├── .vscode/
-│   └── settings.json         # Workspace specific IDE preferences
-├── .github/
-│   └── workflows/
-│       └── unittests.yml     # Automated CI/CD execution for PyTest
+├── backend/
+│   ├── app.py                     # Flask API Server (Port 5001)
+│   └── requirements.txt           # Backend dependencies
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx                # React interactive dashboard source
+│   │   ├── index.css              # Tailwind CSS directives & imports
+│   │   └── main.jsx
+│   ├── package.json               # Node packages (recharts, lucide-react)
+│   ├── postcss.config.js          # Tailwind v4 PostCSS adapter configuration
+│   └── vite.config.js
 ├── data/
-│   ├── raw/                  # Ingested immutable source data streams
-│   └── processed/            # Cleaned, resampled, stationary data arrays
-├── notebooks/
-│   ├── __init__.py
-│   └── README.md             # Notebook process documentation
+│   └── raw/                       # Historical price CSVs and event sheets
 ├── src/
-│   ├── __init__.py
-│   └── pipeline.py           # Production-ready data cleaning & testing modules
-├── scripts/
-│   ├── __init__.py
-│   ├── README.md
-│   └── run_eda.py            # Execution runner for initial statistical assessment
-├── tests/
-│   ├── __init__.py
-│   └── test_pipeline.py      # Unit testing suites
-├── .gitignore                # Environment and raw data tracking blocks
-├── requirements.txt          # Python dependency checklist
-└── README.md                 # Complete project documentation
-Analytical Workflow & FoundationsThis analytical framework breaks down the historical price line into distinct structural eras by checking for variance and distribution shifts:Data ETL Pipeline: Standardizes time series data from May 1987 to September 2022, handling holiday trading gaps via forward-filling methods.Statistical Property Profiling: Implements log-return transformations to eliminate deterministic trends and uses Augmented Dickey-Fuller (ADF) tests to confirm absolute stationarity.Bayesian Change Point Estimation: Deploys a Markov Chain Monte Carlo (MCMC) sampler within a PyMC infrastructure to discover change points ($\tau$) based on shifting mean ($\mu$) and variance ($\sigma^2$) parameters.Geopolitical Overlay: Maps isolated break dates directly against a hand-curated timeline of major global shocks to assess temporal correlation.
-🛠️ Local Installation & SetupClone the Repository into your local directory:Bashgit clone <your-repository-url>
-cd brent-oil-analytics
-Verify your branch settings:Make sure you are currently on the correct feature branch before launching execution tasks:PowerShell git checkout task1
-Initialize Environment and Dependencies:Ensure you are using a Python 3.10+ environment, then execute:Bashpip install -r requirements.txt
-Verify the Ingestion Directory Setup:Confirm that your raw source data file is placed at: data/raw/BrentOilPrices.csv📊 Running the Analytical PipelineTo execute the baseline exploratory data analysis, run the statistical scripts, and output your initial stationarity test results, run the following command in your terminal:Bashpython scripts/run_eda.py
-Expected Execution Outputs:Mathematical ADF Statistics and corresponding $p$-values will print directly to your terminal.High-contrast performance plots tracking raw prices alongside daily stationary log returns will be generated and saved to notebooks/eda_plots.png.
-📝 Task 1a: Core Analytical Assumptions & Structural Limitations
+│   ├── run_change_point.py        # Bayesian change point model runner
+└── README.md                      # Project documentation
+1. Start the Flask Backend
+Open a PowerShell window, navigate to the backend folder, install dependencies, and run the server:
 
-A. Foundational Modeling Assumptions
-Instantaneous Regime Migration: The underlying Bayesian Change Point model operates under the structural assumption that macroeconomic shocks manifest as clean, abrupt mathematical breaks ($\tau$) in parameters, rather than smooth, multi-year linear migrations.
-Independent and Identically Distributed (i.i.d.) Residuals: We assume that once log-return transformations eliminate deterministic trends, the returns within isolated structural regimes behave as normally distributed variations centered around a stable mean ($\mu_k$) and variance ($\sigma_k^2$).
-Data Feed Uniformity: The pipeline treats the historical pricing data from the U.S. Energy Information Administration (EIA) as an authoritative, structurally consistent data feed across its entire 1987–2022 lifecycle.
+PowerShell
+cd backend
+pip install -r requirements.txt
+python app.py
+The server will initialize on http://localhost:5001.
 
-B. Analytical & Model Limitations
-Temporal Proximity vs. Direct Causality: Aligning a statistically isolated price change point with an item in our structured event dataset (`data/raw/gpr_events.csv`) confirms **temporal association**, but does not inherently prove mathematical causality. The model cannot completely isolate oil-specific shocks from concurrent macroeconomic background noise (e.g., shifts in the US Dollar Index $DXY$, domestic interest rate adjustments, or global maritime freight capacity constraints).
-Information Censoring at Trading Gaps: Using forward-fill (`ffill`) adjustments to handle weekend and holiday market closures introduces minor artificial stability. This masks intraday news pricing that occurs while formal trading floors are offline.
-Historical Asymmetry: The historical impact of early events (e.g., the 1990 Gulf War) occurred within a market devoid of high-frequency algorithmic trading desks. Comparing these directly to modern shocks (e.g., the 2022 Russia-Ukraine war) introduces structural baseline biases that a pure mathematical model cannot entirely normalize.
+2. Run the React Frontend Dashboard
+Open a second PowerShell tab/window, navigate to the frontend folder, install dependencies, and launch Vite:
+
+PowerShell
+cd frontend
+npm install
+npm run dev
+Open http://localhost:5173 in your browser to view the live dashboard.
+
+
